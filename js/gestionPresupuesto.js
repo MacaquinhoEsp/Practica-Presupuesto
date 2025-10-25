@@ -55,7 +55,7 @@ function CrearGasto(descripcion, valor, fecha, ...etiquetas) {
         return `Gasto correspondiente a ${this.descripcion} con valor ${this.valor} €`;
     };
     
-    // Método para mostrar el gasto completo
+    // Método para mostrar el gasto completo - CORREGIDO
     this.mostrarGastoCompleto = function() {
         const fechaFormateada = new Date(this.fecha).toLocaleString();
         let etiquetasTexto = '';
@@ -102,6 +102,22 @@ function CrearGasto(descripcion, valor, fecha, ...etiquetas) {
     this.borrarEtiquetas = function(...etiquetasABorrar) {
         this.etiquetas = this.etiquetas.filter(etiqueta => !etiquetasABorrar.includes(etiqueta));
     };
+    
+    // NUEVO MÉTODO: Obtener período de agrupación
+    this.obtenerPeriodoAgrupacion = function(periodo) {
+        const fecha = new Date(this.fecha);
+        
+        switch(periodo) {
+            case 'dia':
+                return fecha.toISOString().split('T')[0]; // Formato YYYY-MM-DD
+            case 'mes':
+                return `${fecha.getFullYear()}-${String(fecha.getMonth() + 1).padStart(2, '0')}`;
+            case 'anyo':
+                return `${fecha.getFullYear()}`;
+            default:
+                return '';
+        }
+    };
 }
 
 // Función para listar todos los gastos
@@ -137,6 +153,94 @@ function calcularBalance() {
     return presupuesto - calcularTotalGastos();
 }
 
+// NUEVA FUNCIÓN: Filtrar gastos - CORREGIDA
+function filtrarGastos(filtros = {}) {
+    return gastos.filter(gasto => {
+        // Si no hay filtros, devolver todos los gastos
+        if (Object.keys(filtros).length === 0) {
+            return true;
+        }
+        
+        // Filtro por fecha desde
+        if (filtros.fechaDesde && gasto.fecha < Date.parse(filtros.fechaDesde)) {
+            return false;
+        }
+        
+        // Filtro por fecha hasta
+        if (filtros.fechaHasta && gasto.fecha > Date.parse(filtros.fechaHasta)) {
+            return false;
+        }
+        
+        // Filtro por valor mínimo
+        if (filtros.valorMinimo !== undefined && gasto.valor < filtros.valorMinimo) {
+            return false;
+        }
+        
+        // Filtro por valor máximo
+        if (filtros.valorMaximo !== undefined && gasto.valor > filtros.valorMaximo) {
+            return false;
+        }
+        
+        // Filtro por descripción que contiene texto
+        if (filtros.descripcionContiene && 
+            !gasto.descripcion.toLowerCase().includes(filtros.descripcionContiene.toLowerCase())) {
+            return false;
+        }
+        
+        // Filtro por etiquetas - CORREGIDO: debe tener AL MENOS UNA de las etiquetas
+        if (filtros.etiquetasTiene && Array.isArray(filtros.etiquetasTiene)) {
+            const tieneAlgunaEtiqueta = filtros.etiquetasTiene.some(etiqueta => 
+                gasto.etiquetas.includes(etiqueta)
+            );
+            if (!tieneAlgunaEtiqueta) {
+                return false;
+            }
+        }
+        
+        return true;
+    });
+}
+
+// NUEVA FUNCIÓN: Agrupar gastos - CORREGIDA
+function agruparGastos(periodo, etiquetas = null, fechaDesde = null, fechaHasta = null) {
+    // Primero filtrar los gastos si se especifican etiquetas o fechas
+    let gastosFiltrados = gastos;
+    
+    if (etiquetas && Array.isArray(etiquetas) && etiquetas.length > 0) {
+        gastosFiltrados = gastosFiltrados.filter(gasto =>
+            // CORREGIDO: debe tener AL MENOS UNA de las etiquetas
+            etiquetas.some(etiqueta => gasto.etiquetas.includes(etiqueta))
+        );
+    }
+    
+    if (fechaDesde) {
+        gastosFiltrados = gastosFiltrados.filter(gasto => 
+            gasto.fecha >= Date.parse(fechaDesde)
+        );
+    }
+    
+    if (fechaHasta) {
+        gastosFiltrados = gastosFiltrados.filter(gasto => 
+            gasto.fecha <= Date.parse(fechaHasta)
+        );
+    }
+    
+    // Agrupar por período
+    const agrupacion = {};
+    
+    gastosFiltrados.forEach(gasto => {
+        const clavePeriodo = gasto.obtenerPeriodoAgrupacion(periodo);
+        
+        if (!agrupacion[clavePeriodo]) {
+            agrupacion[clavePeriodo] = 0;
+        }
+        
+        agrupacion[clavePeriodo] += gasto.valor;
+    });
+    
+    return agrupacion;
+}
+
 // Exportar las funciones para que estén disponibles para los tests
 export { 
     actualizarPresupuesto, 
@@ -146,5 +250,7 @@ export {
     anyadirGasto,
     borrarGasto,
     calcularTotalGastos,
-    calcularBalance
+    calcularBalance,
+    filtrarGastos,
+    agruparGastos
 };

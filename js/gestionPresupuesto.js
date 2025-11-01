@@ -240,17 +240,3 @@ function agruparGastos(periodo, etiquetas = null, fechaDesde = null, fechaHasta 
     
     return agrupacion;
 }
-
-// Exportar las funciones para que estén disponibles para los tests
-export { 
-    actualizarPresupuesto, 
-    mostrarPresupuesto, 
-    CrearGasto,
-    listarGastos,
-    anyadirGasto,
-    borrarGasto,
-    calcularTotalGastos,
-    calcularBalance,
-    filtrarGastos,
-    agruparGastos
-};

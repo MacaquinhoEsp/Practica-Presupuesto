@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestor de Gastos</title>
+    <style>
+        /* Tus estilos CSS aquí (igual que antes) */
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        
+        .container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        
+        .total-gastos {
+            font-size: 1.5em;
+            font-weight: bold;
+            color: #e74c3c;
+            margin-bottom: 20px;
+        }
+        
+        .form-group {
+            margin-bottom: 15px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        
+        input, button {
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        
+        button {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        
+        button:hover {
+            background-color: #2980b9;
+        }
+        
+        .btn-borrar {
+            background-color: #e74c3c;
+            width: auto;
+            padding: 5px 10px;
+        }
+        
+        .btn-borrar:hover {
+            background-color: #c0392b;
+        }
+        
+        .gasto-item {
+            border: 1px solid #ddd;
+            padding: 15px;
+            margin-bottom: 10px;
+            border-radius: 4px;
+            background-color: #f9f9f9;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .gasto-info {
+            flex: 1;
+        }
+        
+        .etiquetas {
+            font-style: italic;
+            color: #7f8c8d;
+        }
+    </style>
+</head>
+<body>
+    <h1>Gestor de Gastos</h1>
+    
+    <div class="container">
+        <div id="total-gastos" class="total-gastos">Total gastado: 0€</div>
+    </div>
+    
+    <div class="container">
+        <h2>Añadir nuevo gasto</h2>
+        <div id="formulario-gasto"></div>
+    </div>
+    
+    <div class="container">
+        <h2>Listado de gastos</h2>
+        <div id="listado-gastos"></div>
+    </div>
+
+    <!-- IMPORTAR EN ESTE ORDEN: Primero la lógica, luego la interfaz -->
+    <script src="js/gestionPresupuesto.js"></script>
+    <script src="js/gestionPresupuestoWebVI.js"></script>
+</body>
+</html>

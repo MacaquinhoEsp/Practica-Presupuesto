@@ -1,0 +1,131 @@
+/* Estilos específicos para el componente mi-gasto */
+mi-gasto {
+    display: block;
+    margin: 10px 0;
+    padding: 15px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background: white;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.gasto-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.gasto-descripcion {
+    font-weight: bold;
+    font-size: 1.1em;
+    color: #333;
+}
+
+.gasto-valor {
+    font-size: 1.2em;
+    font-weight: bold;
+    color: #e74c3c;
+}
+
+.gasto-fecha {
+    color: #666;
+    font-size: 0.9em;
+}
+
+.gasto-etiquetas {
+    margin-top: 8px;
+}
+
+.etiqueta {
+    display: inline-block;
+    background: #3498db;
+    color: white;
+    padding: 2px 8px;
+    border-radius: 12px;
+    font-size: 0.8em;
+    margin-right: 5px;
+}
+
+.gasto-actions {
+    margin-top: 10px;
+    display: flex;
+    gap: 10px;
+}
+
+.btn-editar, .btn-borrar {
+    padding: 5px 10px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.9em;
+    transition: background-color 0.3s;
+}
+
+.btn-editar {
+    background: #f39c12;
+    color: white;
+}
+
+.btn-editar:hover {
+    background: #e67e22;
+}
+
+.btn-borrar {
+    background: #e74c3c;
+    color: white;
+}
+
+.btn-borrar:hover {
+    background: #c0392b;
+}
+
+.form-edicion {
+    margin-top: 15px;
+    padding: 15px;
+    background: #f8f9fa;
+    border-radius: 5px;
+    border: 1px solid #dee2e6;
+}
+
+.form-group {
+    margin-bottom: 10px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+    color: #333;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+.form-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 15px;
+}
+
+.btn-cancelar {
+    padding: 8px 15px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    background: #95a5a6;
+    color: white;
+}
+
+.btn-cancelar:hover {
+    background: #7f8c8d;
+}
+
+.hidden {
+    display: none;
+}

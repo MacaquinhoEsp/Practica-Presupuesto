@@ -4,90 +4,16 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Gestor de Presupuesto Personal</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 20px;
-            background-color: #f5f5f5;
-        }
-        .container {
-            background: white;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-        }
-        h1 {
-            color: #333;
-            text-align: center;
-        }
-        .section {
-            margin-bottom: 30px;
-            padding: 15px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-        }
-        .presupuesto-section {
-            background-color: #e8f5e8;
-        }
-        .gastos-section {
-            background-color: #fff3e0;
-        }
-        input, button {
-            padding: 8px 12px;
-            margin: 5px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-        }
-        button {
-            background-color: #007bff;
-            color: white;
-            border: none;
-            cursor: pointer;
-        }
-        button:hover {
-            background-color: #0056b3;
-        }
-        .resultado {
-            margin-top: 10px;
-            padding: 10px;
-            background-color: #f8f9fa;
-            border-radius: 4px;
-            min-height: 20px;
-        }
-        .error {
-            color: #dc3545;
-            background-color: #f8d7da;
-            padding: 5px;
-            border-radius: 3px;
-        }
-        .success {
-            color: #155724;
-            background-color: #d4edda;
-            padding: 5px;
-            border-radius: 3px;
-        }
-        
-        /* Estilos para el formulario de crear gastos */
-        .form-crear-gasto {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 10px;
-            margin-bottom: 20px;
-        }
-        .form-crear-gasto .full-width {
-            grid-column: 1 / -1;
-        }
-    </style>
+    <link rel="stylesheet" href="css/estilos.css">
+    <link rel="stylesheet" href="css/componente-gasto.css">
 </head>
 <body>
     <div class="container">
-        <h1> Gestor de Presupuesto Personal v2</h1>
+        <h1>💰 Gestor de Presupuesto Personal v2</h1>
 
         <!-- Sección de Presupuesto -->
         <div class="section presupuesto-section">
-            <h2> Gestión de Presupuesto</h2>
+            <h2>📊 Gestión de Presupuesto</h2>
             <div>
                 <label>Actualizar Presupuesto:</label>
                 <input type="number" id="nuevoPresupuesto" placeholder="Ej: 1000" min="0" />
@@ -101,7 +27,7 @@
 
         <!-- Sección de Gastos -->
         <div class="section gastos-section">
-            <h2> Gestión de Gastos</h2>
+            <h2>💸 Gestión de Gastos</h2>
 
             <!-- Formulario para crear gastos -->
             <form id="formCrearGasto" class="form-crear-gasto">
@@ -112,6 +38,12 @@
                 <button type="submit" class="full-width">Crear Gasto</button>
             </form>
 
+            <!-- Botones de almacenamiento local -->
+            <div class="almacenamiento-actions">
+                <button onclick="guardarDatos()" class="btn-guardar">💾 Guardar Datos</button>
+                <button onclick="cargarDatos()" class="btn-cargar">📂 Cargar Datos</button>
+            </div>
+
             <div>
                 <h3>Lista de Gastos:</h3>
                 <div id="listaGastos"></div>
@@ -121,134 +53,7 @@
 
     <!-- Plantilla para el componente mi-gasto -->
     <template id="template-mi-gasto">
-        <style>
-            :host {
-                display: block;
-                margin: 10px 0;
-                padding: 15px;
-                border: 1px solid #ddd;
-                border-radius: 8px;
-                background: white;
-                box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-            }
-            
-            .gasto-header {
-                display: flex;
-                justify-content: space-between;
-                align-items: center;
-                margin-bottom: 10px;
-            }
-            
-            .gasto-descripcion {
-                font-weight: bold;
-                font-size: 1.1em;
-                color: #333;
-            }
-            
-            .gasto-valor {
-                font-size: 1.2em;
-                font-weight: bold;
-                color: #e74c3c;
-            }
-            
-            .gasto-fecha {
-                color: #666;
-                font-size: 0.9em;
-            }
-            
-            .gasto-etiquetas {
-                margin-top: 8px;
-            }
-            
-            .etiqueta {
-                display: inline-block;
-                background: #3498db;
-                color: white;
-                padding: 2px 8px;
-                border-radius: 12px;
-                font-size: 0.8em;
-                margin-right: 5px;
-            }
-            
-            .gasto-actions {
-                margin-top: 10px;
-                display: flex;
-                gap: 10px;
-            }
-            
-            .btn-editar, .btn-borrar {
-                padding: 5px 10px;
-                border: none;
-                border-radius: 4px;
-                cursor: pointer;
-                font-size: 0.9em;
-            }
-            
-            .btn-editar {
-                background: #f39c12;
-                color: white;
-            }
-            
-            .btn-borrar {
-                background: #e74c3c;
-                color: white;
-            }
-            
-            .form-edicion {
-                margin-top: 15px;
-                padding: 15px;
-                background: #f8f9fa;
-                border-radius: 5px;
-                border: 1px solid #dee2e6;
-            }
-            
-            .form-group {
-                margin-bottom: 10px;
-            }
-            
-            .form-group label {
-                display: block;
-                margin-bottom: 5px;
-                font-weight: bold;
-                color: #333;
-            }
-            
-            .form-group input {
-                width: 100%;
-                padding: 8px;
-                border: 1px solid #ccc;
-                border-radius: 4px;
-                box-sizing: border-box;
-            }
-            
-            .form-actions {
-                display: flex;
-                gap: 10px;
-                margin-top: 15px;
-            }
-            
-            .btn-guardar, .btn-cancelar {
-                padding: 8px 15px;
-                border: none;
-                border-radius: 4px;
-                cursor: pointer;
-            }
-            
-            .btn-guardar {
-                background: #27ae60;
-                color: white;
-            }
-            
-            .btn-cancelar {
-                background: #95a5a6;
-                color: white;
-            }
-            
-            .hidden {
-                display: none;
-            }
-        </style>
-        
+        <!-- Los estilos ahora están en css/componente-gasto.css -->
         <div class="gasto-header">
             <span class="gasto-descripcion" id="descripcion"></span>
             <span class="gasto-valor" id="valor"></span>
@@ -290,8 +95,7 @@
             </div>
         </form>
     </template>
-
-    <!-- Cambiamos la importación a la versión 2 -->
-    <script type="module" src="js/gestionPresupuesto.js"></script>
+    <!-- Importación del módulo JavaScript -->
+    <script type="module" src="js/gestionPresupuestoWebV2.js"></script>
 </body>
 </html>
